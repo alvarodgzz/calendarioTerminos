@@ -2,7 +2,19 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+import Login from './Login';
 import reportWebVitals from './reportWebVitals';
+import {Link} from "react-router-dom";
+
+
+const Home = () => {
+  return (
+    <div>
+      <h3>Home</h3>
+      <Link to="/App" >Go to product</Link>
+    </div>
+  );
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
