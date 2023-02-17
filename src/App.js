@@ -33,12 +33,12 @@ const localizer = dateFnsLocalizer({
 })
 
 const events = [
-  // {
-  //   title: "Event 1",
-  //   allDay: true,
-  //   start: new Date(2023,1,2),
-  //   end: new Date(2023,1,7)
-  // },
+  {
+    title: "Event 1",
+    allDay: true,
+    start: new Date(2023,1,2),
+    end: new Date(2023,1,7)
+  },
   // {
   //   title: "Event 2",
   //   allDay: true,
@@ -53,18 +53,40 @@ const events = [
   // }
 ]
 
+
 function App() {
   const [newEvent, setNewEvent] = useState({title: "", start: "", notification: "", efects: "", cantDias: "", end: ""})
-  const [allEvents, setAllEvents] = useState(events)
+  const [allEvents, setAllEvents] = useState([])
+
+  // const [newNotification, setNewNotification] = useState({title: " Notification", start: "", end: ""})
+
+
+  // function isWeekend(date = new Date()) {
+  //   return date.getDay() === 6 || date.getDay() === 0;
+  // }
+
+  // // Non functional
+  // function addNotification(d) {
+  //   // var originalObj = newEvent
+  //   // setNewEvent({...newEvent, title: "Notificacion"})
+  //   // setNewEvent({...newEvent, start: newEvent.notification})
+  //   // setNewEvent({...newEvent, end: newEvent.notification})
+  //   // newEvent.title += " Notificacion";
+  //   setAllEvents([...allEvents, {
+  //       title: "Notification",
+  //       start: d,
+  //       end: d
+  //   }])
+  //   // newEvent = originalObj
+  // }
 
   function handleAddEvent() {
+    
+    // Conteo Handler 
+    // Ya se agrega el plazo falta el handling de fines de semana y dias inhabiles. Pendiente tmbn mostrar notificacion y surte efectos
     var endDate = new Date(newEvent.start);
-    console.log(endDate);
     endDate.setDate(endDate.getDate() + parseInt(newEvent.cantDias));
-    console.log(endDate);
     newEvent.end = endDate;
-    console.log(newEvent.e);
-    console.log(newEvent);
     setAllEvents([...allEvents, newEvent])
   }
 
@@ -77,21 +99,19 @@ function App() {
           value={newEvent.title} onChange={(e) => setNewEvent({...newEvent, title: e.target.value})}
         />
 
-        <DatePicker placeholderText="Fecha Inicio" style={{marginRight: "10px"}}
-        selected={newEvent.start} onChange={(start) => setNewEvent({...newEvent, start})} />
-
         <DatePicker placeholderText="Fecha Notificación" style={{marginRight: "10px"}}
         selected={newEvent.notification} onChange={(notification) => setNewEvent({...newEvent, notification})} />
 
         <DatePicker placeholderText="Surte Efectos" style={{marginRight: "10px"}}
         selected={newEvent.efects} onChange={(efects) => setNewEvent({...newEvent, efects})} />
 
+        <DatePicker placeholderText="Fecha Inicio" style={{marginRight: "10px"}}
+        selected={newEvent.start} onChange={(start) => setNewEvent({...newEvent, start})} />
+
         <input type="int" placeholder="Cant Días" style={{width: "20%", marginRight: "10px"}} 
           value={newEvent.cantDias} onChange={(e) => setNewEvent({...newEvent, cantDias: e.target.value})}
         />
 
-        {/* <DatePicker placeholderText="Fecha Fin" style={{marginRight: "10px"}}
-        selected={newEvent.end} onChange={(end) => setNewEvent({...newEvent, end})} /> */}
         <button style={{marginTop: "10px"}} onClick={handleAddEvent}> Agrega Evento </button>
         
 
