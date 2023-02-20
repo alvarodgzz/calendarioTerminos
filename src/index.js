@@ -8,12 +8,9 @@ import {Link} from "react-router-dom";
 
 
 const Home = () => {
-  return (
-    <div>
-      <h3>Home</h3>
-      <Link to="/App" >Go to product</Link>
-    </div>
-  );
+  for (let i = 0; i < 10; i++) {
+    console.log('hello world!')
+  }
 };
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
