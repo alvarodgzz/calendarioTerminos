@@ -227,7 +227,6 @@ function App() {
       </div>
       <Calendar 
         localizer={localizer} events={allEvents} 
-        onSelectEvent = {event => this.onSelectEvent(event)}
         startAccessor="start" 
         endAccessor="end" 
         onSelectEvent={event => handleDeleteEvent(event)}
