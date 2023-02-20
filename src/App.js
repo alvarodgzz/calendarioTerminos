@@ -221,7 +221,7 @@ function App() {
 
         <button style={{marginTop: "10px"}} onClick={handleAddEvent}> Agrega Evento </button>
 
-        <button style={{marginTop: "10px"}} onClick={countWeekends}> Calcula fines </button>
+        {/* <button style={{marginTop: "10px"}} onClick={countWeekends}> Calcula fines </button> */}
         
 
       </div>
