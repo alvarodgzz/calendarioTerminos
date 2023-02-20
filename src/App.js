@@ -8,6 +8,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import React, { useState, useEffect } from "react";
 import DatePicker, { getDefaultLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { addDays } from "date-fns";
 
 // var mongo = require('mongodb');
 
@@ -56,6 +57,9 @@ const events = [
 const notifications = []
 const efects = []
 
+const disableDates = new Date('February 19, 2022 23:15:30');
+const date1=disableDates.getDate();
+
 function App() {
   const [newEvent, setNewEvent] = useState({title: "", start: "", notification: "", efects: "", cantDias: "", end: ""})
   const [allEvents, setAllEvents] = useState(events)
@@ -71,6 +75,40 @@ function App() {
   //   return date.getDay() === 6 || date.getDay() === 0;
   // }
 
+
+  function countWeekends() {
+
+    var start = new Date(newEvent.start);
+    var end = new Date(newEvent.end);
+
+    var weekends = 0;
+
+    console.log(start, end)
+
+    while(start < end){
+      start.setDate(start.getDate() + 1);
+      if (start.getDay() === 0 || start.getDay() == 6){
+          ++weekends;
+      }
+    }
+
+    var daysToadd = weekends
+    console.log(weekends)
+
+    while (daysToadd > 0) {
+      if (start.getDay() === 0 || start.getDay() == 6){
+        ++weekends;
+      } else {
+        --daysToadd;
+      }
+      start.setDate(start.getDate() + 1);
+      console.log(daysToadd);
+    }
+
+    console.log(weekends)
+    
+    return weekends;
+  }
 
   function handleAddNotification() {
     
@@ -120,10 +158,28 @@ function App() {
   function handleAddEvent() {
     // Conteo Handler 
     // Ya se agrega el plazo falta el handling de fines de semana y dias inhabiles. Pendiente tmbn mostrar notificacion y surte efectos
+  
     var endDate = new Date(newEvent.start);
     endDate.setDate(endDate.getDate() + parseInt(newEvent.cantDias));
     newEvent.end = endDate;
-    setAllEvents([...allEvents, newEvent])
+    endDate.setDate(endDate.getDate() + countWeekends())
+    
+    setAllEvents([...allEvents, newEvent]);
+    // setNewEvent({
+    //   ...newEvent,
+    //   end: 
+    // })
+  }
+
+  //Clicking an existing event allows you to remove it
+  function handleDeleteEvent(pEvent) {
+    const r = window.confirm("Would you like to remove this event?");
+    var idx = allEvents.indexOf(pEvent)
+    console.log(idx)
+    if(r === true){
+      allEvents.splice(idx, 1);
+      return { events };  
+    }
   }
 
   return (
@@ -161,11 +217,19 @@ function App() {
         />
 
         <button style={{marginTop: "10px"}} onClick={handleAddEvent}> Agrega Evento </button>
+
+        <button style={{marginTop: "10px"}} onClick={countWeekends}> Calcula fines </button>
         
 
       </div>
-      <Calendar localizer={localizer} events={allEvents}
-      startAccessor="start" endAccessor="end" style={{height: 500, margin: "50px"}} />
+      <Calendar 
+        localizer={localizer} events={allEvents} 
+        onSelectEvent = {event => this.onSelectEvent(event)}
+        startAccessor="start" 
+        endAccessor="end" 
+        onSelectEvent={event => handleDeleteEvent(event)}
+        style={{height: 500, margin: "50px"}} 
+      />
     </div>
   );
 }
