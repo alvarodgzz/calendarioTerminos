@@ -87,7 +87,8 @@ function App() {
 
     while(start < end){
       start.setDate(start.getDate() + 1);
-      if (start.getDay() === 0 || start.getDay() == 6){
+      if (start.getDay() === 0 || start.getDay() == 6) {
+          console.log(start.getDay(), start)
           ++weekends;
       }
     }
@@ -95,14 +96,16 @@ function App() {
     var daysToadd = weekends
     console.log(weekends)
 
+    while (start.getDay() === 0 || start.getDay() == 6) {start.setDate(start.getDate() + 1);}
+
     while (daysToadd > 0) {
-      if (start.getDay() === 0 || start.getDay() == 6){
+      if (start.getDay() === 0 || start.getDay() == 6) {
+        console.log(start.getDay(), start)
         ++weekends;
       } else {
         --daysToadd;
       }
       start.setDate(start.getDate() + 1);
-      console.log(daysToadd);
     }
 
     console.log(weekends)
@@ -175,7 +178,7 @@ function App() {
   function handleDeleteEvent(pEvent) {
     const r = window.confirm("Would you like to remove this event?");
     var idx = allEvents.indexOf(pEvent)
-    console.log(idx)
+    // console.log(idx)
     if(r === true){
       allEvents.splice(idx, 1);
       return { events };  
