@@ -57,8 +57,59 @@ const events = [
 const notifications = []
 const efects = []
 
-const disableDates = new Date('February 19, 2022 23:15:30');
-const date1=disableDates.getDate();
+var disableDates = [
+  "1/1/2023", 
+  "2/6/2023", 
+  "3/20/2023", 
+  "3/21/2023",
+  "4/5/2023",
+  "4/6/2023",
+  "4/7/2023",
+  "5/1/2023",
+  "5/5/2023",
+  "7/16/2023",
+  "7/17/2023",
+  "7/18/2023",
+  "7/19/2023",
+  "7/20/2023",
+  "7/21/2023",
+  "7/22/2023",
+  "7/23/2023",
+  "7/24/2023",
+  "7/25/2023",
+  "7/26/2023",
+  "7/27/2023",
+  "7/28/2023",
+  "7/29/2023",
+  "7/30/2023",
+  "7/31/2023",
+  "9/14/2023",
+  "9/15/2023",
+  "9/16/2023",
+  "10/12/2023",
+  "20/31/2023",
+  "11/1/2023",
+  "11/2/2023",
+  "11/20/2023",
+  "12/15/2023",
+  "12/16/2023",
+  "12/17/2023",
+  "12/18/2023",
+  "12/19/2023",
+  "12/20/2023",
+  "12/21/2023",
+  "12/22/2023",
+  "12/23/2023",
+  "12/24/2023",
+  "12/25/2023",
+  "12/26/2023",
+  "12/27/2023",
+  "12/28/2023",
+  "12/29/2023",
+  "12/30/2023",
+  "12/31/2023",
+  "1/1/2023"
+];
 
 function App() {
   const [newEvent, setNewEvent] = useState({title: "", start: "", notification: "", efects: "", cantDias: "", end: ""})
@@ -70,10 +121,34 @@ function App() {
   const [newEfect, setNewEfect] = useState({title: "", start: "", notification: "", efects: "", cantDias: "", end: ""})
   const [allEfects, setAllEfects] = useState(efects)
 
+  const calendarStyle = (date) => {
+    if (isDisabledDay(disableDates, date))
+    return {
+      style: {
+        backgroundColor: '#DC143C', 
+        border: '1px solid gray',
+        margin: 0,
+        padding: 0
+      }
+    }
 
-  // function isWeekend(date = new Date()) {
-  //   return date.getDay() === 6 || date.getDay() === 0;
-  // }
+    if (date.getDay() === 0 || date.getDay() == 6)
+    return {
+      style: {
+        backgroundColor: '#88C9E8', 
+        border: '1px solid gray',
+        margin: 0,
+        padding: 0
+      }
+    }
+}
+
+  function isDisabledDay(array, value) {
+    var date = new Date(value);
+    var newdate= (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
+    console.log(newdate)
+    return (array.find(item => {return item == newdate}) || []).length > 0;
+  }
 
 
   function countWeekends() {
@@ -83,24 +158,25 @@ function App() {
 
     var weekends = 0;
 
-    console.log(start, end)
+    // console.log(start, end)
 
     while(start < end){
-      start.setDate(start.getDate() + 1);
-      if (start.getDay() === 0 || start.getDay() == 6) {
-          console.log(start.getDay(), start)
+      // console.log(isDisabledDay(disableDates, start));
+      if (start.getDay() === 0 || start.getDay() == 6 || isDisabledDay(disableDates, start)) {
+          // console.log(start.getDay(), start)
           ++weekends;
       }
+      start.setDate(start.getDate() + 1);
     }
 
     var daysToadd = weekends
     console.log(weekends)
 
-    while (start.getDay() === 0 || start.getDay() == 6) {start.setDate(start.getDate() + 1);}
+    // while (start.getDay() === 0 || start.getDay() == 6 || isDisabledDay(disableDates, start)) {start.setDate(start.getDate() + 1);}
 
     while (daysToadd > 0) {
-      if (start.getDay() === 0 || start.getDay() == 6) {
-        console.log(start.getDay(), start)
+      if (start.getDay() === 0 || start.getDay() == 6 || isDisabledDay(disableDates, start)) {
+        // console.log(start.getDay(), start)
         ++weekends;
       } else {
         --daysToadd;
@@ -231,6 +307,7 @@ function App() {
         endAccessor="end" 
         onSelectEvent={event => handleDeleteEvent(event)}
         style={{height: 500, margin: "50px"}} 
+        dayPropGetter={calendarStyle}
       />
     </div>
   );
