@@ -255,12 +255,23 @@ function App() {
     var totalEvents = [];
     while (startDate < endDate) {
       if (startDate.getDay() != 0 && startDate.getDay() != 6 && !isDisabledDay(disableDates, startDate)) {
-        var currTitle = helperTitle + ' - ' + dia++;
+
+        var currTitle = helperTitle + ' - ' + dia;
+
+        if (dia == newEvent.cantDias - 1) {
+          currTitle += " V"
+        } else if (dia == newEvent.cantDias) {
+          currTitle += " VF"
+        }
         var currStart = new Date(newEvent.start);
         currStart.setDate(currStart.getDate() + cont - 1);
+
         var currEvent = {title: currTitle, start: currStart, notification: "", efects: "", cantDias: "", end: currStart}
         totalEvents.push(currEvent);
+
         console.log(newEvent.title);
+
+        dia++;
       } 
       cont++;
       startDate.setDate(startDate.getDate() + 1);
