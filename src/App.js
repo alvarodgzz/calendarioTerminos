@@ -125,22 +125,6 @@ function App() {
   const [newEfect, setNewEfect] = useState({title: "", start: "", notification: "", efects: "", cantDias: "", end: ""})
   const [allEfects, setAllEfects] = useState(efects)
 
-  const customDateHeader = () => {
-      return (
-        <div className='row p-0 m-0'>
-          <div className='col-md-10 text-center p-0 mt-1'>City</div>
-          <div className='col-md-2 p-0'>
-            <button
-              className='btn btn-sm btn-outline-primary font-weight-bold mt-1'
-              onClick={alert('hello world')}
-            >
-            </button>
-          </div>
-        </div>
-      );
-    
-  };
-
   const calendarStyle = (date) => {
     if (isDisabledDay(disableDates, date))
     return {
@@ -166,7 +150,7 @@ function App() {
   function isDisabledDay(array, value) {
     var date = new Date(value);
     var newdate= (date.getMonth() + 1) + '/' + date.getDate() + '/' +  date.getFullYear();
-    console.log(newdate)
+    // console.log(newdate)
     return (array.find(item => {return item == newdate}) || []).length > 0;
   }
 
@@ -190,7 +174,7 @@ function App() {
     }
 
     var daysToadd = weekends
-    console.log(weekends)
+    // console.log(weekends)
 
     // while (start.getDay() === 0 || start.getDay() == 6 || isDisabledDay(disableDates, start)) {start.setDate(start.getDate() + 1);}
 
@@ -204,7 +188,7 @@ function App() {
       start.setDate(start.getDate() + 1);
     }
 
-    console.log(weekends)
+    // console.log(weekends)
     
     return weekends;
   }
@@ -229,7 +213,7 @@ function App() {
       end: notDate,
       cantDias: "1"
     })
-    console.log(newNotification);
+    // console.log(newNotification);
   }
 
   function handleAddEfects() {
@@ -251,23 +235,50 @@ function App() {
       end: efectDate,
       cantDias: "1"
     })
-    console.log(newEfect);
+    // console.log(newEfect);
   }
 
   function handleAddEvent() {
     // Conteo Handler 
     // Ya se agrega el plazo falta el handling de fines de semana y dias inhabiles. Pendiente tmbn mostrar notificacion y surte efectos
-  
+    
+    var startDate = new Date(newEvent.start);
     var endDate = new Date(newEvent.start);
+    var cantDias = newEvent.cantDias; 
     endDate.setDate(endDate.getDate() + parseInt(newEvent.cantDias));
     newEvent.end = endDate;
-    endDate.setDate(endDate.getDate() + countWeekends())
+    endDate.setDate(endDate.getDate() + countWeekends());
+
+    var cont = 1;
+    var dia = 1;
+    var helperTitle = newEvent.title;
+    var totalEvents = [];
+    while (startDate < endDate) {
+      if (startDate.getDay() != 0 && startDate.getDay() != 6 && !isDisabledDay(disableDates, startDate)) {
+        var currTitle = helperTitle + ' - ' + dia++;
+        var currStart = new Date(newEvent.start);
+        currStart.setDate(currStart.getDate() + cont - 1);
+        var currEvent = {title: currTitle, start: currStart, notification: "", efects: "", cantDias: "", end: currStart}
+        totalEvents.push(currEvent);
+        console.log(newEvent.title);
+      } 
+      cont++;
+      startDate.setDate(startDate.getDate() + 1);
+    }
+
+    console.log(totalEvents);
+    setAllEvents([...allEvents, ...totalEvents]);
     
-    setAllEvents([...allEvents, newEvent]);
+    
+    // addHelper(totalEvents);
     // setNewEvent({
     //   ...newEvent,
     //   end: 
     // })
+  }
+
+  async function addHelper(totalEvents) {
+    
   }
 
   //Clicking an existing event allows you to remove it
