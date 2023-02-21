@@ -1,5 +1,5 @@
 import "./App.css";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar, dateFnsLocalizer, momentLocalizer } from "react-big-calendar";
 import format from "date-fns/format";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
@@ -9,6 +9,8 @@ import React, { useState, useEffect } from "react";
 import DatePicker, { getDefaultLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays } from "date-fns";
+import moment from "moment"
+import 'moment/locale/es'; 
 
 // var mongo = require('mongodb');
 
@@ -22,16 +24,18 @@ import { addDays } from "date-fns";
 // });
 
 const locales = {
-  "en-US": require("date-fns/locale/en-US")
+  "es": require("date-fns/locale/es")
 }
-const localizer = dateFnsLocalizer({
-  format,
-  parse,
-  startOfWeek,
-  getDay,
-  dateFnsLocalizer,
-  locales
-})
+// const localizer = dateFnsLocalizer({
+//   format,
+//   parse,
+//   startOfWeek,
+//   getDay,
+//   dateFnsLocalizer,
+//   locales
+// })
+
+const localizer = momentLocalizer(moment) 
 
 const events = [
   // {
@@ -120,6 +124,22 @@ function App() {
 
   const [newEfect, setNewEfect] = useState({title: "", start: "", notification: "", efects: "", cantDias: "", end: ""})
   const [allEfects, setAllEfects] = useState(efects)
+
+  const customDateHeader = () => {
+      return (
+        <div className='row p-0 m-0'>
+          <div className='col-md-10 text-center p-0 mt-1'>City</div>
+          <div className='col-md-2 p-0'>
+            <button
+              className='btn btn-sm btn-outline-primary font-weight-bold mt-1'
+              onClick={alert('hello world')}
+            >
+            </button>
+          </div>
+        </div>
+      );
+    
+  };
 
   const calendarStyle = (date) => {
     if (isDisabledDay(disableDates, date))
